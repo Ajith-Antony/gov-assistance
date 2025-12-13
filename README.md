@@ -14,12 +14,12 @@ A multi-step form application built with **React**, **MUI**, and **React Hook Fo
 - Responsive design using Material UI
 - Success/Error submission pages
 - 404 page
--
 
 ---
 
 ## Folder Structure
 
+```
 src/
 ├─ components/ # Reusable UI components
 ├─ hooks/ # Custom hooks
@@ -30,6 +30,7 @@ src/
 ├─ App.js
 └─ main.jsx
 └─ routes.jsx
+```
 
 ---
 
@@ -50,4 +51,25 @@ Must use VITE_ prefix to access in Vite.
 3. Start development server
 
 npm run dev
+```
+
+---
+
+## Architectural Decisions
+
+```
+Architecture & Design Notes
+
+- React + React Hook Form: Handles form state and validation in a declarative manner.
+
+- MUI (Material UI): Provides ready-to-use, accessible, and customizable components, such as buttons, inputs, dialogs, etc.
+
+- i18next: Used for multi-language support, handling English and Arabic translations along with RTL layout for Arabic.
+
+- AI Text Generation: The generateAIText function handles text generation using the OpenAI API.
+
+- Persistent Form Data: Form data is stored in the browser's localStorage to allow the user to resume filling out the form.
+
+- Routing: Language-aware routing, with paths like /:lang/home and /:lang/apply/:step, allowing multi-language support.
+
 ```
