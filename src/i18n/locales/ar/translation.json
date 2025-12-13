@@ -1,0 +1,111 @@
+{
+  "app_title": "طلب المساعدة الاجتماعية",
+
+  "common": {
+    "next": "التالي",
+    "back": "السابق",
+    "submit": "إرسال",
+    "cancel": "إلغاء",
+    "save": "حفظ",
+    "edit": "تعديل",
+    "loading": "جاري التحميل...",
+    "switchLanguage": "تغيير اللغة",
+    "home": "بيت",
+    "welcome": "مرحباً!",
+    "applyButton": "التقدم بطلب للحصول على المساعدة"
+  },
+
+  "errors": {
+    "required": "هذا الحقل مطلوب",
+    "invalidEmail": "يرجى إدخال بريد إلكتروني صحيح",
+    "invalidPhone": "أدخل رقم هاتف صحيح",
+    "dateInFuture": "لا يمكن أن يكون التاريخ في المستقبل"
+  },
+
+  "personal": {
+    "heading": "معلومات شخصية",
+    "fullName": "الاسم الكامل",
+    "nationalId": "رقم الهوية الوطنية",
+    "dateOfBirth": "تاريخ الميلاد",
+    "gender": "الجنس",
+    "gender_male": "ذكر",
+    "gender_female": "أنثى",
+    "gender_other": "آخر",
+    "address": "العنوان",
+    "city": "المدينة",
+    "state": "المنطقة",
+    "country": "الدولة",
+    "phone": "رقم الهاتف",
+    "email": "البريد الإلكتروني"
+  },
+
+  "countries": {
+    "sa": "المملكة العربية السعودية",
+    "ae": "الإمارات العربية المتحدة",
+    "eg": "مصر",
+    "us": "الولايات المتحدة",
+    "uk": "المملكة المتحدة"
+  },
+
+  "financial": {
+    "heading": "المعلومات العائلية والمالية",
+    "maritalStatus": "الحالة الاجتماعية",
+    "marital_single": "أعزب",
+    "marital_married": "متزوج",
+    "marital_divorced": "مطلق",
+    "marital_widowed": "أرمل",
+
+    "dependents": "عدد المعالين",
+
+    "employmentStatus": "الحالة الوظيفية",
+    "employed": "موظف",
+    "selfEmployed": "عمل حر",
+    "unemployed": "غير موظف",
+    "student": "طالب",
+    "retired": "متقاعد",
+
+    "monthlyIncome": "الدخل الشهري",
+
+    "housingStatus": "وضع السكن",
+    "housing_rent": "إيجار",
+    "housing_own": "ملك",
+    "housing_family": "العيش مع العائلة",
+    "housing_temporary": "سكن مؤقت"
+  },
+
+  "situation": {
+    "heading": "وصف المواقف",
+    "financialSituation": "الوضع المالي الحالي",
+    "employmentCircumstances": "ظروف العمل",
+    "reasonForApplying": "سبب التقديم"
+  },
+
+  "ai": {
+    "generate": "إنشاء نص",
+    "useText": "استخدام النص",
+    "close": "إغلاق",
+
+    "financialSituationPrompt": "ساعدني في وصف وضعي المالي الحالي.",
+    "employmentCircumstancesPrompt": "ساعدني في وصف ظروفي الوظيفية.",
+    "reasonForApplyingPrompt": "ساعدني في كتابة سبب التقديم لطلب المساعدة.",
+    "helpMeWrite": "ساعدني في الكتابة",
+    "writeHere": "يمكنك تعديل النص المقترح هنا...",
+    "accept": "استخدام النص",
+    "discard": "تجاهل",
+    "error": "فشل إنشاء النص. يرجى المحاولة مرة أخرى."
+  },
+  "pageNotFound": {
+    "title": "الصفحة غير موجودة",
+    "code": "404",
+    "description": "الصفحة التي تبحث عنها غير موجودة.",
+    "goHome": "العودة للصفحة الرئيسية"
+  },
+  "submission": {
+    "successTitle": "تم إرسال الطلب بنجاح",
+    "errorTitle": "خطأ في الإرسال",
+    "successMessage": "تم تقديم طلبك بنجاح.",
+    "errorMessage": "حدث خطأ أثناء تقديم طلبك. يرجى المحاولة مرة أخرى.",
+    "goHome": "العودة للصفحة الرئيسية",
+    "tryAgain": "إعادة المحاولة"
+  }
+}

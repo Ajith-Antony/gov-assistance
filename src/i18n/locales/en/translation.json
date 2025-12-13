@@ -1,0 +1,111 @@
+{
+  "app_title": "Social Support Application",
+
+  "common": {
+    "next": "Next",
+    "back": "Back",
+    "submit": "Submit",
+    "cancel": "Cancel",
+    "save": "Save",
+    "edit": "Edit",
+    "loading": "Loading...",
+    "switchLanguage": "Switch Language",
+    "home": "Home",
+    "welcome": "Welcome!",
+    "applyButton": "Apply for assistance"
+  },
+
+  "errors": {
+    "required": "This field is required",
+    "invalidEmail": "Enter a valid email address",
+    "invalidPhone": "Enter a valid phone number",
+    "dateInFuture": "Date cannot be in the future"
+  },
+
+  "personal": {
+    "heading": "Personal Information",
+    "fullName": "Full Name",
+    "nationalId": "National ID",
+    "dateOfBirth": "Date of Birth",
+    "gender": "Gender",
+    "gender_male": "Male",
+    "gender_female": "Female",
+    "gender_other": "Other",
+    "address": "Address",
+    "city": "City",
+    "state": "State",
+    "country": "Country",
+    "phone": "Phone Number",
+    "email": "Email Address"
+  },
+
+  "countries": {
+    "sa": "Saudi Arabia",
+    "ae": "United Arab Emirates",
+    "eg": "Egypt",
+    "us": "United States",
+    "uk": "United Kingdom"
+  },
+
+  "financial": {
+    "heading": "Family & Financial Info",
+    "maritalStatus": "Marital Status",
+    "marital_single": "Single",
+    "marital_married": "Married",
+    "marital_divorced": "Divorced",
+    "marital_widowed": "Widowed",
+
+    "dependents": "Number of Dependents",
+
+    "employmentStatus": "Employment Status",
+    "employed": "Employed",
+    "selfEmployed": "Self-Employed",
+    "unemployed": "Unemployed",
+    "student": "Student",
+    "retired": "Retired",
+
+    "monthlyIncome": "Monthly Income",
+
+    "housingStatus": "Housing Status",
+    "housing_rent": "Renting",
+    "housing_own": "Owned Home",
+    "housing_family": "Living with Family",
+    "housing_temporary": "Temporary Housing"
+  },
+
+  "situation": {
+    "heading": "Situation Descriptions",
+    "financialSituation": "Current Financial Situation",
+    "employmentCircumstances": "Employment Circumstances",
+    "reasonForApplying": "Reason for Applying"
+  },
+
+  "ai": {
+    "generate": "Generate",
+    "useText": "Use This Text",
+    "close": "Close",
+
+    "financialSituationPrompt": "Help me describe my current financial situation.",
+    "employmentCircumstancesPrompt": "Help me describe my employment circumstances.",
+    "reasonForApplyingPrompt": "Help me write a reason for applying for financial assistance.",
+    "helpMeWrite": "Help me write",
+    "writeHere": "You can edit the generated text here...",
+    "accept": "Accept",
+    "discard": "Discard",
+    "error": "Failed to generate text. Please try again."
+  },
+  "pageNotFound": {
+    "title": "Page Not Found",
+    "code": "404",
+    "description": "The page you are looking for does not exist.",
+    "goHome": "Go Home"
+  },
+  "submission": {
+    "successTitle": "Successfully Submitted",
+    "errorTitle": "Submission Error",
+    "successMessage": "Your application has been submitted successfully.",
+    "errorMessage": "An error occurred while submitting your application. Please try again.",
+    "goHome": "Go Home",
+    "tryAgain": "Try Again"
+  }
+}
