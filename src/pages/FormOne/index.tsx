@@ -1,5 +1,4 @@
 import { useParams, useNavigate } from "react-router";
-import { useEffect } from "react";
 import FormWrapper from "../../components/Forms/FormWrapper";
 import { personalInfoFields } from "./helper";
 import RenderField from "../../components/Forms/FormFieldRenderer";
