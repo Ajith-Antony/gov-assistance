@@ -33,12 +33,6 @@ export default function FormTwo() {
     true
   );
 
-  // Update applicationData when form changes (for final submission)
-  useEffect(() => {
-    setApplicationData((prev) => ({ ...prev, financialInfo: formData } as typeof prev));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [formData, setApplicationData]);
-
   const handleBack = () => {
     navigate(`/${currentLang}/apply/first`);
   };

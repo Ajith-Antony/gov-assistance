@@ -36,11 +36,6 @@ export default function FormOne() {
     true
   );
 
-  // Update applicationData when form changes (for final submission)
-  useEffect(() => {
-    setApplicationData({ ...applicationData, personalInfo: formData });
-  }, [formData]); // Only update when formData changes
-
   const handleBack = () => {
     navigate(`/${currentLang}/home`);
   };

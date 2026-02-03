@@ -1,5 +1,4 @@
 import { useParams, useNavigate } from "react-router";
-import { useEffect } from "react";
 import FormWrapper from "../../components/Forms/FormWrapper";
 import { situationFields } from "./helper";
 import { useForm } from "react-hook-form";
@@ -30,12 +29,6 @@ export default function FormThree() {
     formData,
     true
   );
-
-  // Update applicationData when form changes (for final submission)
-  useEffect(() => {
-    setApplicationData((prev) => ({ ...prev, situationInfo: formData } as typeof prev));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [formData, setApplicationData]);
 
   const handleBack = () => {
     navigate(`/${currentLang}/apply/second`);
