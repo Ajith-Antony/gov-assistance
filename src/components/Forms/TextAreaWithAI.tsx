@@ -3,7 +3,6 @@ import { Controller, type Control, type FieldValues, type Path } from "react-hoo
 import {
   TextField,
   Box,
-  IconButton,
   Button,
   Dialog,
   DialogTitle,
@@ -11,7 +10,6 @@ import {
   DialogActions,
   CircularProgress,
   Alert,
-  InputAdornment,
   FormHelperText,
 } from "@mui/material";
 import AutoFixHighIcon from "@mui/icons-material/AutoFixHigh";
@@ -77,62 +75,42 @@ export default function TextAreaWithAI<T extends FieldValues>({
           fieldState: { error: fieldError },
         }) => {
           const currentValue = controllerField.value as string || "";
-          const isEmpty = !currentValue || currentValue.trim() === "";
 
           return (
             <>
-              {isEmpty ? (
-                // Show button when field is empty
-                <Box>
-                  <TextField
-                    {...controllerField}
-                    fullWidth
-                    multiline
-                    minRows={4}
-                    maxRows={6}
-                    placeholder={t(label)}
-                    error={!!fieldError}
-                    aria-describedby={helperId}
-                    sx={{ overflow: "auto" }}
-                  />
-                  <Button
-                    variant="outlined"
-                    startIcon={<AutoFixHighIcon />}
-                    onClick={() => handleOpen(currentValue)}
-                    sx={{ mt: 1 }}
-                    fullWidth
-                  >
-                    {t("ai.helpMeWrite")}
-                  </Button>
-                </Box>
-              ) : (
-                // Show icon button when field has content
-                <TextField
-                  {...controllerField}
-                  fullWidth
-                  multiline
-                  minRows={4}
-                  maxRows={6}
-                  placeholder={t(label)}
-                  error={!!fieldError}
-                  aria-describedby={helperId}
-                  sx={{ overflow: "auto" }}
-                  InputProps={{
-                    endAdornment: (
-                      <InputAdornment position="end">
-                        <IconButton
-                          onClick={() => handleOpen(currentValue)}
-                          aria-label={t("ai.improveText")}
-                          edge="end"
-                        >
-                          <AutoFixHighIcon />
-                        </IconButton>
-                      </InputAdornment>
-                    ),
-                  }}
-                />
-              )}
+              <TextField
+                {...controllerField}
+                fullWidth
+                multiline
+                minRows={4}
+                maxRows={6}
+                placeholder={t(label)}
+                error={!!fieldError}
+                aria-describedby={helperId}
+                sx={{ 
+                  overflow: "auto",
+                  mb: 1,
+                }}
+              />
               
+              <Button
+                variant="outlined"
+                startIcon={<AutoFixHighIcon />}
+                onClick={() => handleOpen(currentValue)}
+                size="small"
+                sx={{
+                  alignSelf: "flex-start",
+                  borderColor: "rgba(139, 92, 246, 0.5)",
+                  color: "#8b5cf6",
+                  "&:hover": {
+                    borderColor: "#8b5cf6",
+                    backgroundColor: "rgba(139, 92, 246, 0.05)",
+                  },
+                }}
+              >
+                {t("ai.helpMeWrite")}
+              </Button>
+
               {(fieldError || error) && (
                 <FormHelperText id={helperId} error>
                   {t(fieldError?.message ?? "") || error}
@@ -168,12 +146,15 @@ export default function TextAreaWithAI<T extends FieldValues>({
                     WebkitBackgroundClip: "text",
                     WebkitTextFillColor: "transparent",
                     fontWeight: 700,
+                    px: 3,
+                    pt: 3,
+                    pb: 2,
                   }}
                 >
-                  {isEmpty ? t("ai.helpMeWrite") : t("ai.improveText")}
+                  {t("ai.helpMeWrite")}
                 </DialogTitle>
 
-                <DialogContent>
+                <DialogContent sx={{ px: 3, py: 2 }}>
                   {loading && (
                     <Box
                       sx={{ display: "flex", justifyContent: "center", py: 3 }}
@@ -193,15 +174,21 @@ export default function TextAreaWithAI<T extends FieldValues>({
                       fullWidth
                       multiline
                       minRows={6}
+                      maxRows={6}
                       value={draft}
                       onChange={(e) => setDraft(e.target.value)}
                       placeholder={t("ai.writeHere")}
-                      sx={{ overflow: "auto" }}
+                      sx={{ 
+                        overflow: "auto",
+                        "& .MuiInputBase-root": {
+                          maxHeight: "200px",
+                        },
+                      }}
                     />
                   )}
                 </DialogContent>
 
-                <DialogActions>
+                <DialogActions sx={{ px: 3, pb: 3, pt: 2 }}>
                   <Button onClick={handleClose}>{t("ai.discard")}</Button>
                   <Button
                     variant="contained"

@@ -1,4 +1,5 @@
 import { Box, Container, Paper, Typography } from "@mui/material";
+import { useState, useEffect } from "react";
 import FormNavigationButtons from "./FormNavigationButtons";
 
 export default function FormWrapper({
@@ -16,6 +17,20 @@ export default function FormWrapper({
 }) {
   const progress = step && totalSteps ? (step / totalSteps) * 100 : 0;
   const subtitle = step && totalSteps ? `${step}/${totalSteps}` : "";
+  
+  // Animate progress from 0 to current value
+  const [animatedProgress, setAnimatedProgress] = useState(0);
+  
+  useEffect(() => {
+    // Reset to 0 first
+    setAnimatedProgress(0);
+    // Then animate to target after a brief delay
+    const timer = setTimeout(() => {
+      setAnimatedProgress(progress);
+    }, 100);
+    
+    return () => clearTimeout(timer);
+  }, [progress]);
 
   return (
     <Box
@@ -100,10 +115,22 @@ export default function FormWrapper({
             <Box
               sx={{
                 height: "100%",
-                width: `${progress}%`,
-                background: "linear-gradient(90deg, #2563eb 0%, #8b5cf6 100%)",
-                transition: "width 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
-                boxShadow: "0 0 15px rgba(139, 92, 246, 0.8), 0 0 30px rgba(37, 99, 235, 0.4)",
+                width: `${animatedProgress}%`,
+                background: "linear-gradient(90deg, #10b981 0%, #34d399 100%)",
+                transition: "width 0.8s cubic-bezier(0.65, 0, 0.35, 1)",
+                boxShadow: "0 0 15px rgba(16, 185, 129, 0.8), 0 0 30px rgba(52, 211, 153, 0.4)",
+                animation: animatedProgress > 0 ? "progressPulse 0.6s ease-out" : "none",
+                "@keyframes progressPulse": {
+                  "0%": {
+                    boxShadow: "0 0 15px rgba(16, 185, 129, 0.8), 0 0 30px rgba(52, 211, 153, 0.4)",
+                  },
+                  "50%": {
+                    boxShadow: "0 0 25px rgba(16, 185, 129, 1), 0 0 50px rgba(52, 211, 153, 0.6)",
+                  },
+                  "100%": {
+                    boxShadow: "0 0 15px rgba(16, 185, 129, 0.8), 0 0 30px rgba(52, 211, 153, 0.4)",
+                  },
+                },
               }}
             />
           </Box>
