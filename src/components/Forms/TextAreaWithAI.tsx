@@ -1,14 +1,14 @@
 import { useState } from "react";
-import { Controller } from "react-hook-form";
+import { Controller, type Control, type FieldValues, type Path } from "react-hook-form";
 import {
   TextField,
   Box,
   IconButton,
+  Button,
   Dialog,
   DialogTitle,
   DialogContent,
   DialogActions,
-  Button,
   CircularProgress,
   Alert,
   InputAdornment,
@@ -17,10 +17,19 @@ import {
 import AutoFixHighIcon from "@mui/icons-material/AutoFixHigh";
 import { useTranslation } from "react-i18next";
 import { generateAIText } from "../../services/generateAIText";
+import type { FieldConfig } from "../../pages/FormOne/helper";
 
-export default function TextAreaWithAI({ field, control }) {
+interface TextAreaWithAIProps<T extends FieldValues> {
+  field: FieldConfig;
+  control: Control<T>;
+}
+
+export default function TextAreaWithAI<T extends FieldValues>({
+  field,
+  control,
+}: TextAreaWithAIProps<T>) {
   const { t } = useTranslation();
-  const { name, label, rules, ai } = field;
+  const { name, label, rules } = field;
 
   const [open, setOpen] = useState(false);
   const [draft, setDraft] = useState("");
@@ -29,14 +38,19 @@ export default function TextAreaWithAI({ field, control }) {
 
   const helperId = `${name}-helper`;
 
-  const handleOpen = async () => {
+  const handleOpen = async (currentValue: string) => {
     setOpen(true);
     setDraft("");
     setError("");
     setLoading(true);
 
     try {
-      const result = await generateAIText(ai.prompt);
+      // Use existing content as context if present, otherwise use default prompt
+      const prompt = currentValue
+        ? `Based on this text: "${currentValue}", please improve and expand it to better describe the situation.`
+        : `Help me describe my financial situation and need for government support.`;
+      
+      const result = await generateAIText(prompt);
       setDraft(result);
     } catch (err) {
       setError(t("ai.error"));
@@ -53,95 +67,128 @@ export default function TextAreaWithAI({ field, control }) {
   };
 
   return (
-    <Box sx={{ mb: 2, position: "relative" }}>
+    <Box sx={{ mb: 2, position: "relative", minWidth: 250, flex: 1 }}>
       <Controller
-        name={name}
+        name={name as Path<T>}
         control={control}
         rules={rules}
         render={({
           field: controllerField,
           fieldState: { error: fieldError },
-        }) => (
-          <>
-            <TextField
-              {...controllerField}
-              fullWidth
-              multiline
-              minRows={4}
-              maxRows={6}
-              placeholder={t(label)}
-              error={!!fieldError}
-              aria-describedby={helperId}
-              sx={{
-                overflow: "auto",
-              }}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <IconButton
-                      onClick={handleOpen}
-                      aria-label={t("ai.helpMeWrite")}
-                      edge="end"
-                    >
-                      <AutoFixHighIcon />
-                    </IconButton>
-                  </InputAdornment>
-                ),
-              }}
-            />
-            {(fieldError || error) && (
-              <FormHelperText id={helperId} error>
-                {t(fieldError?.message || error)}
-              </FormHelperText>
-            )}
+        }) => {
+          const currentValue = controllerField.value as string || "";
+          const isEmpty = !currentValue || currentValue.trim() === "";
 
-            <Dialog open={open} onClose={handleClose} fullWidth maxWidth="sm">
-              <DialogTitle>{t("ai.helpMeWrite")}</DialogTitle>
-
-              <DialogContent>
-                {loading && (
-                  <Box
-                    sx={{ display: "flex", justifyContent: "center", py: 3 }}
-                  >
-                    <CircularProgress />
-                  </Box>
-                )}
-
-                {error && (
-                  <Alert severity="error" sx={{ mb: 2 }}>
-                    {error}
-                  </Alert>
-                )}
-
-                {!loading && !error && (
+          return (
+            <>
+              {isEmpty ? (
+                // Show button when field is empty
+                <Box>
                   <TextField
+                    {...controllerField}
                     fullWidth
                     multiline
-                    minRows={6}
-                    value={draft}
-                    onChange={(e) => setDraft(e.target.value)}
-                    placeholder={t("ai.writeHere")}
+                    minRows={4}
+                    maxRows={6}
+                    placeholder={t(label)}
+                    error={!!fieldError}
+                    aria-describedby={helperId}
                     sx={{ overflow: "auto" }}
                   />
-                )}
-              </DialogContent>
-
-              <DialogActions>
-                <Button onClick={handleClose}>{t("ai.discard")}</Button>
-                <Button
-                  variant="contained"
-                  disabled={!draft}
-                  onClick={() => {
-                    controllerField.onChange(draft);
-                    handleClose();
+                  <Button
+                    variant="outlined"
+                    startIcon={<AutoFixHighIcon />}
+                    onClick={() => handleOpen(currentValue)}
+                    sx={{ mt: 1 }}
+                    fullWidth
+                  >
+                    {t("ai.helpMeWrite")}
+                  </Button>
+                </Box>
+              ) : (
+                // Show icon button when field has content
+                <TextField
+                  {...controllerField}
+                  fullWidth
+                  multiline
+                  minRows={4}
+                  maxRows={6}
+                  placeholder={t(label)}
+                  error={!!fieldError}
+                  aria-describedby={helperId}
+                  sx={{ overflow: "auto" }}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton
+                          onClick={() => handleOpen(currentValue)}
+                          aria-label={t("ai.improveText")}
+                          edge="end"
+                        >
+                          <AutoFixHighIcon />
+                        </IconButton>
+                      </InputAdornment>
+                    ),
                   }}
-                >
-                  {t("ai.accept")}
-                </Button>
-              </DialogActions>
-            </Dialog>
-          </>
-        )}
+                />
+              )}
+              
+              {(fieldError || error) && (
+                <FormHelperText id={helperId} error>
+                  {t(fieldError?.message ?? "") || error}
+                </FormHelperText>
+              )}
+
+              <Dialog open={open} onClose={handleClose} fullWidth maxWidth="sm">
+                <DialogTitle>
+                  {isEmpty ? t("ai.helpMeWrite") : t("ai.improveText")}
+                </DialogTitle>
+
+                <DialogContent>
+                  {loading && (
+                    <Box
+                      sx={{ display: "flex", justifyContent: "center", py: 3 }}
+                    >
+                      <CircularProgress />
+                    </Box>
+                  )}
+
+                  {error && (
+                    <Alert severity="error" sx={{ mb: 2 }}>
+                      {error}
+                    </Alert>
+                  )}
+
+                  {!loading && !error && (
+                    <TextField
+                      fullWidth
+                      multiline
+                      minRows={6}
+                      value={draft}
+                      onChange={(e) => setDraft(e.target.value)}
+                      placeholder={t("ai.writeHere")}
+                      sx={{ overflow: "auto" }}
+                    />
+                  )}
+                </DialogContent>
+
+                <DialogActions>
+                  <Button onClick={handleClose}>{t("ai.discard")}</Button>
+                  <Button
+                    variant="contained"
+                    disabled={!draft}
+                    onClick={() => {
+                      controllerField.onChange(draft);
+                      handleClose();
+                    }}
+                  >
+                    {t("ai.accept")}
+                  </Button>
+                </DialogActions>
+              </Dialog>
+            </>
+          );
+        }}
       />
     </Box>
   );
