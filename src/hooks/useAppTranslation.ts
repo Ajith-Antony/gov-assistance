@@ -6,7 +6,7 @@ export default function useAppTranslation() {
   const language = i18n.language;
   const dir = i18n.dir();
 
-  const setLanguage = (lng) => {
+  const setLanguage = (lng: string) => {
     i18n.changeLanguage(lng);
   };
 

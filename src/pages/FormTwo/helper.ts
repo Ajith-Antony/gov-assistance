@@ -1,4 +1,6 @@
-export const familyFinancialFields = [
+import type { FieldConfig } from "../FormOne/helper";
+
+export const familyFinancialFields: FieldConfig[] = [
   {
     name: "maritalStatus",
     label: "financial.maritalStatus",
@@ -20,8 +22,6 @@ export const familyFinancialFields = [
     component: "TextField",
     rules: {
       required: "errors.required",
-      min: 0,
-      max: 20,
     },
   },
 
@@ -47,7 +47,6 @@ export const familyFinancialFields = [
     component: "TextField",
     rules: {
       required: "errors.required",
-      min: 0,
     },
   },
 

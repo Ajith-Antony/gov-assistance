@@ -1,4 +1,25 @@
-export const personalInfoFields = [
+export interface FieldOption {
+  value: string;
+  label: string;
+}
+
+export interface FieldConfig {
+  name: string;
+  label: string;
+  type: string;
+  component: string;
+  options?: FieldOption[];
+  rules?: {
+    required?: string;
+    pattern?: {
+      value: RegExp;
+      message: string;
+    };
+    validate?: (value: unknown) => boolean | string;
+  };
+}
+
+export const personalInfoFields: FieldConfig[] = [
   {
     name: "fullName",
     label: "personal.fullName",
@@ -20,9 +41,9 @@ export const personalInfoFields = [
     component: "DatePicker",
     rules: {
       required: "errors.required",
-      validate: (value) => {
+      validate: (value: unknown) => {
         if (!value) return true;
-        const selectedDate = new Date(value);
+        const selectedDate = new Date(value as string);
         const today = new Date();
         return selectedDate < today || "errors.dateInFuture";
       },

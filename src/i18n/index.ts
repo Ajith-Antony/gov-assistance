@@ -5,9 +5,9 @@ import LanguageDetector from "i18next-browser-languagedetector";
 import en from "./locales/en/translation.json";
 import ar from "./locales/ar/translation.json";
 
-const getLanguageFromURL = () => {
+const getLanguageFromURL = (): string | null => {
   const pathMatch = window.location.pathname.match(/^\/(en|ar)(\/.*)?$/);
-  return pathMatch ? pathMatch[1] : null;
+  return pathMatch?.[1] ?? null;
 };
 
 const initialLang = getLanguageFromURL() || "en";

@@ -1,8 +1,7 @@
 import { createTheme } from "@mui/material/styles";
-import createCache from "@emotion/cache";
-import rtlPlugin from "stylis-plugin-rtl";
+import type { Theme } from "@mui/material/styles";
 
-export const getTheme = (dir = "ltr") =>
+export const getTheme = (dir: "ltr" | "rtl" = "ltr"): Theme =>
   createTheme({
     direction: dir,
     typography: {
@@ -12,9 +11,6 @@ export const getTheme = (dir = "ltr") =>
       MuiInputBase: {
         styleOverrides: {
           input: {
-            textAlign: dir === "rtl" ? "right" : "left",
-          },
-          "&::placeholder": {
             textAlign: dir === "rtl" ? "right" : "left",
           },
         },
@@ -28,3 +24,4 @@ export const getTheme = (dir = "ltr") =>
       },
     },
   });
+

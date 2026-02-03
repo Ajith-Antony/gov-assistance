@@ -1,13 +1,11 @@
-export const situationFields = [
+import type { FieldConfig } from "../FormOne/helper";
+
+export const situationFields: FieldConfig[] = [
   {
     name: "financialSituation",
     label: "situation.financialSituation",
     type: "textarea",
     component: "TextAreaWithAI",
-    ai: {
-      prompt:
-        "I am unemployed with no income. Help me describe my financial hardship.",
-    },
     rules: { required: "errors.required" },
   },
 
@@ -16,10 +14,6 @@ export const situationFields = [
     label: "situation.employmentCircumstances",
     type: "textarea",
     component: "TextAreaWithAI",
-    ai: {
-      prompt:
-        "I am unemployed with no income. Help me describe my employment circumstances.",
-    },
     rules: { required: "errors.required" },
   },
 
@@ -28,10 +22,6 @@ export const situationFields = [
     label: "situation.reasonForApplying",
     type: "textarea",
     component: "TextAreaWithAI",
-    ai: {
-      prompt:
-        "I am unemployed with no income. Help me describe my reason for applying.",
-    },
     rules: { required: "errors.required" },
   },
 ];
