@@ -35,9 +35,15 @@ export default function CountryCitySelect<T extends FieldValues>({
   useEffect(() => {
     const loadCountries = async () => {
       setLoadingCountries(true);
-      const data = await fetchCountries();
-      setCountries(data);
-      setLoadingCountries(false);
+      try {
+        const data = await fetchCountries();
+        console.log("Loaded countries:", data.length);
+        setCountries(data);
+      } catch (error) {
+        console.error("Error loading countries:", error);
+      } finally {
+        setLoadingCountries(false);
+      }
     };
     loadCountries();
   }, []);
@@ -45,16 +51,32 @@ export default function CountryCitySelect<T extends FieldValues>({
   useEffect(() => {
     const loadStates = async () => {
       if (countryValue) {
+        // Find the country name from the ISO2 code
+        const selectedCountry = countries.find((c) => c.iso2 === countryValue);
+        if (!selectedCountry) {
+          console.warn("Country not found for ISO2:", countryValue);
+          return;
+        }
+
+        console.log("Loading states for country:", selectedCountry.country);
         setLoadingStates(true);
-        const data = await fetchStates(countryValue);
-        setStates(data);
-        setLoadingStates(false);
+        try {
+          // API requires country name, not ISO2 code
+          const data = await fetchStates(selectedCountry.country);
+          console.log("Loaded states:", data.length);
+          setStates(data);
+        } catch (error) {
+          console.error("Error loading states:", error);
+          setStates([]);
+        } finally {
+          setLoadingStates(false);
+        }
       } else {
         setStates([]);
       }
     };
     loadStates();
-  }, [countryValue]);
+  }, [countryValue, countries]);
 
   return (
     <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap", width: "100%" }}>
@@ -81,17 +103,24 @@ export default function CountryCitySelect<T extends FieldValues>({
                   aria-invalid={hasError}
                   aria-describedby={helperId}
                   disabled={loadingCountries}
+                  value={controllerField.value || ""}
+                  onChange={(e) => {
+                    controllerField.onChange(e);
+                    console.log("Country selected:", e.target.value);
+                  }}
                 >
                   {loadingCountries ? (
                     <MenuItem disabled>
                       <CircularProgress size={20} />
                     </MenuItem>
-                  ) : (
+                  ) : countries.length > 0 ? (
                     countries.map((country) => (
                       <MenuItem key={country.iso2} value={country.iso2}>
-                        {country.name}
+                        {country.country}
                       </MenuItem>
                     ))
+                  ) : (
+                    <MenuItem disabled>{t("common.noCountriesAvailable")}</MenuItem>
                   )}
                 </Select>
                 {hasError && (
@@ -126,6 +155,7 @@ export default function CountryCitySelect<T extends FieldValues>({
                   aria-invalid={hasError}
                   aria-describedby={helperId}
                   disabled={!countryValue || loadingStates}
+                  value={controllerField.value || ""}
                 >
                   {loadingStates ? (
                     <MenuItem disabled>

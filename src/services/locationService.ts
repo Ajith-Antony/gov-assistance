@@ -1,10 +1,11 @@
 import { API_ENDPOINTS } from "../constants";
 
 export interface Country {
-  name: string;
+  country: string;
   iso2: string;
   iso3: string;
 }
+
 
 export interface State {
   name: string;
