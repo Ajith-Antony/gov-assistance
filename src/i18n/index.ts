@@ -4,35 +4,36 @@ import LanguageDetector from "i18next-browser-languagedetector";
 
 import en from "./locales/en/translation.json";
 import ar from "./locales/ar/translation.json";
+import { LANGUAGES } from "../constants";
 
 const getLanguageFromURL = (): string | null => {
   const pathMatch = window.location.pathname.match(/^\/(en|ar)(\/.*)?$/);
   return pathMatch?.[1] ?? null;
 };
 
-const initialLang = getLanguageFromURL() || "en";
+const initialLang = getLanguageFromURL() || LANGUAGES.ENGLISH;
 
 i18n
   .use(LanguageDetector)
   .use(initReactI18next)
   .init({
     resources: {
-      en: { translation: en },
-      ar: { translation: ar },
+      [LANGUAGES.ENGLISH]: { translation: en },
+      [LANGUAGES.ARABIC]: { translation: ar },
     },
     lng: initialLang,
-    fallbackLng: "en",
+    fallbackLng: LANGUAGES.ENGLISH,
     interpolation: {
       escapeValue: false,
     },
   });
 
-const initialDir = (initialLang || i18n.language) === "ar" ? "rtl" : "ltr";
+const initialDir = (initialLang || i18n.language) === LANGUAGES.ARABIC ? "rtl" : "ltr";
 document.documentElement.dir = initialDir;
 document.documentElement.lang = initialLang || i18n.language;
 
 i18n.on("languageChanged", (lng) => {
-  const dir = lng === "ar" ? "rtl" : "ltr";
+  const dir = lng === LANGUAGES.ARABIC ? "rtl" : "ltr";
   document.documentElement.dir = dir;
   document.documentElement.lang = lng;
 

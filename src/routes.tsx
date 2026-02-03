@@ -1,5 +1,5 @@
 import { Navigate, useParams } from "react-router";
-import { useEffect } from "react";
+import { useEffect, type ReactNode } from "react";
 import Home from "./pages/Home";
 import FormOne from "./pages/FormOne";
 import FormTwo from "./pages/FormTwo";
@@ -7,44 +7,47 @@ import FormThree from "./pages/FormThree";
 import PageNotFound from "./pages/PageNotFound";
 import SubmissionStatus from "./pages/SubmissionStatus";
 import i18n from "./i18n";
+import { ROUTES, STEPS, SUPPORTED_LANGUAGES, LANGUAGES } from "./constants";
 
 export function LangRedirect() {
   const { lang } = useParams();
   const validLang =
-    lang && ["en", "ar"].includes(lang) ? lang : i18n.language || "en";
+    lang && SUPPORTED_LANGUAGES.includes(lang as typeof SUPPORTED_LANGUAGES[number])
+      ? lang
+      : i18n.language || LANGUAGES.ENGLISH;
   return <Navigate to={`/${validLang}/home`} replace />;
 }
 
 export function RootRedirect() {
-  return <Navigate to={`/${i18n.language || "en"}/home`} replace />;
+  return <Navigate to={`/${i18n.language || LANGUAGES.ENGLISH}/home`} replace />;
 }
 
-export function getStepComponent(step) {
+export function getStepComponent(step: string | undefined) {
   switch (step) {
-    case "first":
+    case STEPS.FIRST:
       return <FormOne />;
-    case "second":
+    case STEPS.SECOND:
       return <FormTwo />;
-    case "third":
+    case STEPS.THIRD:
       return <FormThree />;
     default:
       return null;
   }
 }
 
-export function LanguageRoute({ children }) {
+export function LanguageRoute({ children }: { children: ReactNode }) {
   const { lang } = useParams();
 
   useEffect(() => {
-    if (lang && ["en", "ar"].includes(lang)) {
+    if (lang && SUPPORTED_LANGUAGES.includes(lang as typeof SUPPORTED_LANGUAGES[number])) {
       if (i18n.language !== lang) {
         i18n.changeLanguage(lang);
       }
     }
   }, [lang]);
 
-  if (lang && !["en", "ar"].includes(lang)) {
-    return <Navigate to={`/${i18n.language || "en"}/home`} replace />;
+  if (lang && !SUPPORTED_LANGUAGES.includes(lang as typeof SUPPORTED_LANGUAGES[number])) {
+    return <Navigate to={`/${i18n.language || LANGUAGES.ENGLISH}/home`} replace />;
   }
 
   return children;
@@ -52,31 +55,32 @@ export function LanguageRoute({ children }) {
 
 export const routeConfig = [
   {
-    path: "/",
+    path: ROUTES.ROOT,
     Component: RootRedirect,
   },
   {
-    path: "/:lang",
+    path: ROUTES.LANG,
     Component: LangRedirect,
   },
   {
-    path: "/:lang/home",
+    path: ROUTES.HOME,
     Component: Home,
   },
   {
-    path: "/:lang/apply/done",
+    path: ROUTES.APPLY_DONE,
     Component: SubmissionStatus,
   },
   {
-    path: "/:lang/apply/:step",
+    path: ROUTES.APPLY_STEP,
     Component: null,
   },
   {
-    path: "/:lang/*",
+    path: ROUTES.LANG_WILDCARD,
     Component: PageNotFound,
   },
   {
-    path: "*",
+    path: ROUTES.WILDCARD,
     Component: PageNotFound,
   },
 ];
+
