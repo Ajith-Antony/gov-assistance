@@ -1,4 +1,4 @@
-import { Controller } from "react-hook-form";
+import { Controller, type Control, type FieldValues, type Path } from "react-hook-form";
 import {
   TextField,
   MenuItem,
@@ -11,9 +11,28 @@ import {
 import { DatePicker } from "@mui/x-date-pickers";
 import { useTranslation } from "react-i18next";
 import TextAreaWithAI from "./TextAreaWithAI";
+import PhoneNumberInput from "./PhoneNumberInput";
+import CountryCitySelect from "./CountryCitySelect";
+import MoneyInput from "./MoneyInput";
 import dayjs from "dayjs";
+import type { FieldConfig } from "../../pages/FormOne/helper";
 
-export default function RenderField({ field, control, onAIGenerate = null }) {
+interface RenderFieldProps<T extends FieldValues> {
+  field: FieldConfig;
+  control: Control<T>;
+  countryValue?: string;
+  relatedFields?: {
+    countryField?: FieldConfig;
+    stateField?: FieldConfig;
+  };
+}
+
+export default function RenderField<T extends FieldValues>({
+  field,
+  control,
+  countryValue,
+  relatedFields,
+}: RenderFieldProps<T>) {
   const { t } = useTranslation();
   const { name, label: labelKey, component, type, options, rules } = field;
   const label = t(labelKey);
@@ -22,14 +41,34 @@ export default function RenderField({ field, control, onAIGenerate = null }) {
   return (
     <Box sx={{ minWidth: 250, flex: 1 }}>
       <Controller
-        name={name}
+        name={name as Path<T>}
         control={control}
         rules={rules}
         render={({ field: controllerField, fieldState: { error } }) => {
           const hasError = !!error;
-          const helperText = hasError ? t(error.message) : "";
+          const helperText = hasError ? t(error.message ?? "") : "";
 
           switch (component) {
+            case "PhoneNumberInput":
+              return <PhoneNumberInput field={field} control={control} />;
+
+            case "CountryCitySelect":
+              if (!relatedFields?.countryField || !relatedFields?.stateField) {
+                console.error("CountryCitySelect requires countryField and stateField");
+                return <Box />;
+              }
+              return (
+                <CountryCitySelect
+                  countryField={relatedFields.countryField}
+                  stateField={relatedFields.stateField}
+                  control={control}
+                  countryValue={countryValue}
+                />
+              );
+
+            case "MoneyInput":
+              return <MoneyInput field={field} control={control} />;
+
             case "TextField":
               return (
                 <TextField
@@ -57,6 +96,7 @@ export default function RenderField({ field, control, onAIGenerate = null }) {
                   <Select
                     {...controllerField}
                     labelId={`${name}-label`}
+                    label={label}
                     aria-invalid={hasError}
                     aria-describedby={helperId}
                     value={selectedValue}
@@ -101,8 +141,6 @@ export default function RenderField({ field, control, onAIGenerate = null }) {
                 <TextAreaWithAI
                   field={field}
                   control={control}
-                  onAIGenerate={onAIGenerate}
-                  aria-label={label}
                 />
               );
 

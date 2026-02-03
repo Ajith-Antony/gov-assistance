@@ -67,42 +67,34 @@ export const personalInfoFields: FieldConfig[] = [
     component: "TextField",
     rules: { required: "errors.required" },
   },
+  // Country and State will be rendered together using CountryCitySelect
   {
-    name: "city",
-    label: "personal.city",
-    type: "text",
-    component: "TextField",
+    name: "country",
+    label: "personal.country",
+    type: "select",
+    component: "CountryCitySelect", // Special marker for grouped rendering
     rules: { required: "errors.required" },
   },
   {
     name: "state",
     label: "personal.state",
-    type: "text",
-    component: "TextField",
-    rules: { required: "errors.required" },
-  },
-  {
-    name: "country",
-    label: "personal.country",
     type: "select",
-    component: "Select",
-    options: [
-      { value: "ae", label: "countries.ae" },
-      { value: "us", label: "countries.us" },
-      { value: "uk", label: "countries.uk" },
-    ],
+    component: "CountryCitySelect", // Will be rendered with country
     rules: { required: "errors.required" },
   },
   {
     name: "phone",
     label: "personal.phone",
-    type: "text",
-    component: "TextField",
+    type: "tel",
+    component: "PhoneNumberInput",
     rules: {
       required: "errors.required",
-      pattern: {
-        value: /^[0-9]{8,15}$/,
-        message: "errors.invalidPhone",
+      validate: (value: unknown) => {
+        const phoneValue = value as string;
+        if (!phoneValue) return "errors.required";
+        // Basic validation - react-phone-number-input handles detailed validation
+        if (phoneValue.length < 8) return "errors.invalidPhone";
+        return true;
       },
     },
   },

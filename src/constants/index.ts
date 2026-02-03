@@ -26,6 +26,7 @@ export const SUPPORTED_LANGUAGES = [LANGUAGES.ENGLISH, LANGUAGES.ARABIC] as cons
 
 // Local Storage Keys
 export const STORAGE_KEYS = {
+  APPLICATION_DATA: "gov-support-application-data",
   FORM_ONE_DATA: "gov-support-form-one",
   FORM_TWO_DATA: "gov-support-form-two",
   FORM_THREE_DATA: "gov-support-form-three",
@@ -33,6 +34,7 @@ export const STORAGE_KEYS = {
   AUTH_TOKEN: "gov-support-auth-token",
   REFRESH_TOKEN: "gov-support-refresh-token",
 } as const;
+
 
 // API Endpoints
 export const API_ENDPOINTS = {
