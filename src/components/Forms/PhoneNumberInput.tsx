@@ -1,6 +1,8 @@
 import { Controller, type Control, type FieldValues, type Path } from "react-hook-form";
-import { TextField, Box } from "@mui/material";
+import { TextField } from "@mui/material";
 import { useTranslation } from "react-i18next";
+import PhoneInput from "react-phone-number-input";
+import "react-phone-number-input/style.css";
 import type { FieldConfig } from "../../pages/FormOne/helper";
 
 interface PhoneNumberInputProps<T extends FieldValues> {
@@ -18,31 +20,34 @@ export default function PhoneNumberInput<T extends FieldValues>({
   const helperId = `${name}-helper`;
 
   return (
-    <Box sx={{ minWidth: 250, flex: 1 }}>
-      <Controller
-        name={name as Path<T>}
-        control={control}
-        rules={rules}
-        render={({ field: controllerField, fieldState: { error } }) => {
-          const hasError = !!error;
-          const helperText = hasError ? t(error.message ?? "") : "";
+    <Controller
+      name={name as Path<T>}
+      control={control}
+      rules={rules}
+      render={({ field: controllerField, fieldState: { error } }) => {
+        const hasError = !!error;
+        const helperText = hasError ? t(error.message ?? "") : "";
 
-          return (
-            <TextField
-              {...controllerField}
-              fullWidth
-              type="tel"
-              label={label}
-              error={hasError}
-              helperText={helperText}
-              placeholder="+971 50 123 4567"
-              aria-invalid={hasError}
-              aria-describedby={helperId}
-              FormHelperTextProps={{ id: helperId }}
-            />
-          );
-        }}
-      />
-    </Box>
+        return (
+          <PhoneInput
+            {...controllerField}
+            international
+            withCountryCallingCode
+            defaultCountry="AE"
+            countryCallingCodeEditable={false}
+            inputComponent={TextField}
+            style={{ minWidth: 250, flex: 1 }}
+            numberInputProps={{
+              label,
+              error: hasError,
+              helperText,
+              "aria-invalid": hasError,
+              "aria-describedby": helperId,
+              FormHelperTextProps: { id: helperId },
+            }}
+          />
+        );
+      }}
+    />
   );
 }

@@ -7,7 +7,6 @@ import { useForm } from "react-hook-form";
 import useAppTranslation from "../../hooks/useAppTranslation";
 import useLocalStorage from "../../hooks/useLocalStorage";
 import useAutoSave from "../../hooks/useAutoSave";
-import AutoSaveIndicator from "../../components/AutoSaveIndicator";
 import { Box } from "@mui/material";
 import { STORAGE_KEYS } from "../../constants";
 
@@ -31,7 +30,7 @@ export default function FormOne() {
 
   // Auto-save form data on change (debounced)
   const formData = watch();
-  const autoSaveStatus = useAutoSave(
+  useAutoSave(
     `${STORAGE_KEYS.APPLICATION_DATA}_personalInfo`,
     formData,
     true
@@ -63,33 +62,29 @@ export default function FormOne() {
       onBack={handleBack}
       onNext={handleNext}
     >
-      <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-        <AutoSaveIndicator status={autoSaveStatus} />
-        
-        <Box sx={{ display: "flex", flexWrap: "wrap", gap: "1rem" }}>
-          {personalInfoFields.map((field) => {
-            // Skip state field as it will be rendered with country
-            if (field.name === "state") return null;
+      <Box sx={{ display: "flex", flexWrap: "wrap", gap: "1rem" }}>
+        {personalInfoFields.map((field) => {
+          // Skip state field as it will be rendered with country
+          if (field.name === "state") return null;
 
-            // Render country with state together
-            if (field.name === "country" && countryField && stateField) {
-              return (
-                <RenderField
-                  key="country-state"
-                  field={countryField}
-                  control={control}
-                  countryValue={countryValue}
-                  relatedFields={{
-                    countryField,
-                    stateField,
-                  }}
-                />
-              );
-            }
+          // Render country with state together
+          if (field.name === "country" && countryField && stateField) {
+            return (
+              <RenderField
+                key="country-state"
+                field={countryField}
+                control={control}
+                countryValue={countryValue}
+                relatedFields={{
+                  countryField,
+                  stateField,
+                }}
+              />
+            );
+          }
 
-            return <RenderField key={field.name} field={field} control={control} />;
-          })}
-        </Box>
+          return <RenderField key={field.name} field={field} control={control} />;
+        })}
       </Box>
     </FormWrapper>
   );
