@@ -77,16 +77,28 @@ export default function PhoneNumberInput<T extends FieldValues>({
         }, [fullValue]);
 
         return (
-          <FormControl sx={{ minWidth: 250, flex: 1 }} error={hasError}>
-            <Box sx={{ display: "flex", gap: 1 }}>
+          <FormControl 
+            sx={{ 
+              minWidth: { xs: "100%", sm: 250 }, 
+              flex: 1 
+            }} 
+            error={hasError}
+          >
+            <Box sx={{ 
+              display: "flex", 
+              gap: 1,
+              flexDirection: { xs: "column", sm: "row" }
+            }}>
               <Select
                 value={selectedCode}
                 onChange={(e) => handleCodeChange(e.target.value)}
-                sx={{ minWidth: 120 }}
+                sx={{ 
+                  minWidth: { xs: "100%", sm: 120 }
+                }}
               >
                 {countryCodes.map((item) => (
                   <MenuItem key={item.code} value={item.code}>
-                    {item.code}
+                    {item.code} ({item.country})
                   </MenuItem>
                 ))}
               </Select>

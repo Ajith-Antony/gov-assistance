@@ -15,6 +15,13 @@
     "applyButton": "Apply for assistance"
   },
 
+  "home": {
+    "subtitle": "Apply for government assistance programs quickly and easily. Get the support you need.",
+    "feature1": "Fast and simple application process",
+    "feature2": "Secure and confidential information handling",
+    "feature3": "Track your application status in real-time"
+  },
+
   "errors": {
     "required": "This field is required",
     "invalidEmail": "Enter a valid email address",

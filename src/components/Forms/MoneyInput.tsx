@@ -32,9 +32,16 @@ export default function MoneyInput<T extends FieldValues>({
   const selectedCurrency = SUPPORTED_CURRENCIES.find((c) => c.code === currency);
 
   return (
-    <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap", width: "100%", minWidth: 250, flex: 1 }}>
+    <Box sx={{ 
+      display: "flex", 
+      gap: 2, 
+      flexDirection: { xs: "column", sm: "row" },
+      width: "100%", 
+      minWidth: { xs: "100%", sm: 250 }, 
+      flex: 1 
+    }}>
       {/* Currency Selector */}
-      <FormControl sx={{ minWidth: 120 }}>
+      <FormControl sx={{ minWidth: { xs: "100%", sm: 120 } }}>
         <InputLabel id="currency-label">{t("financial.currency")}</InputLabel>
         <Select
           labelId="currency-label"
@@ -51,7 +58,7 @@ export default function MoneyInput<T extends FieldValues>({
       </FormControl>
 
       {/* Amount Input */}
-      <Box sx={{ flex: 1, minWidth: 200 }}>
+      <Box sx={{ flex: 1, minWidth: { xs: "100%", sm: 200 } }}>
         <Controller
           name={name as Path<T>}
           control={control}

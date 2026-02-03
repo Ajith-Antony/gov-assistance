@@ -1,9 +1,12 @@
 import "./App.css";
 import { BrowserRouter, Routes, Route, useParams } from "react-router";
+import { ThemeProvider } from "@mui/material/styles";
+import CssBaseline from "@mui/material/CssBaseline";
 import NavigationBar from "./components/NavigationBar";
 import { routeConfig, getStepComponent, LanguageRoute } from "./routes";
 import PageNotFound from "./pages/PageNotFound";
 import ErrorBoundary from "./components/ErrorBoundary";
+import theme from "./theme";
 
 function StepRoute() {
   const { step } = useParams();
@@ -22,32 +25,35 @@ function StepRoute() {
 
 function App() {
   return (
-    <ErrorBoundary>
-      <BrowserRouter>
-        <NavigationBar />
-        <Routes>
-          {routeConfig.map((route, index) => {
-            if (route.path === "/:lang/apply/:step") {
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <ErrorBoundary>
+        <BrowserRouter>
+          <NavigationBar />
+          <Routes>
+            {routeConfig.map((route, index) => {
+              if (route.path === "/:lang/apply/:step") {
+                return (
+                  <Route key={index} path={route.path} element={<StepRoute />} />
+                );
+              }
+              const RouteComponent = route.Component;
               return (
-                <Route key={index} path={route.path} element={<StepRoute />} />
+                <Route
+                  key={index}
+                  path={route.path}
+                  element={
+                    <LanguageRoute>
+                      <RouteComponent />
+                    </LanguageRoute>
+                  }
+                />
               );
-            }
-            const RouteComponent = route.Component;
-            return (
-              <Route
-                key={index}
-                path={route.path}
-                element={
-                  <LanguageRoute>
-                    <RouteComponent />
-                  </LanguageRoute>
-                }
-              />
-            );
-          })}
-        </Routes>
-      </BrowserRouter>
-    </ErrorBoundary>
+            })}
+          </Routes>
+        </BrowserRouter>
+      </ErrorBoundary>
+    </ThemeProvider>
   );
 }
 

@@ -18,84 +18,156 @@ export default function FormWrapper({
   const subtitle = step && totalSteps ? `${step}/${totalSteps}` : "";
 
   return (
-    <Container maxWidth={maxWidth} sx={{ py: 4, height: "calc(100% - 64px)" }}>
-      <Paper
-        elevation={3}
+    <Box
+      sx={{
+        minHeight: "calc(100vh - 64px)",
+        background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+        position: "relative",
+        overflow: "hidden",
+        py: { xs: 3, sm: 5 },
+      }}
+    >
+      {/* Animated background shapes */}
+      <Box
         sx={{
-          p: 3,
-          height: "100%",
-          display: "flex",
-          flexDirection: "column",
-          position: "relative",
+          position: "absolute",
+          top: "-10%",
+          right: "-5%",
+          width: "40%",
+          height: "40%",
+          borderRadius: "50%",
+          background: "rgba(255, 255, 255, 0.1)",
+          filter: "blur(60px)",
+          animation: "float 6s ease-in-out infinite",
+          "@keyframes float": {
+            "0%, 100%": { transform: "translateY(0px)" },
+            "50%": { transform: "translateY(-30px)" },
+          },
         }}
-        role="region"
-        aria-labelledby="form-title"
-        aria-describedby="form-step"
+      />
+
+      <Container 
+        maxWidth={maxWidth as any}
+        sx={{ 
+          px: { xs: 2, sm: 3 },
+          position: "relative",
+          zIndex: 1,
+        }}
       >
-        <Box
+        <Paper
+          elevation={3}
           sx={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            right: 0,
-            height: "4px",
-            backgroundColor: "#e0e0e0",
-            borderRadius: "4px 4px 0 0",
+            p: { xs: 2, sm: 4 },
+            width: "100%",
+            display: "flex",
+            flexDirection: "column",
+            position: "relative",
+            overflow: "hidden",
+            background: "rgba(255, 255, 255, 0.85)",
+            backdropFilter: "blur(30px) saturate(180%)",
+            WebkitBackdropFilter: "blur(30px) saturate(180%)",
+            borderRadius: 4,
+            border: "1px solid rgba(255, 255, 255, 0.5)",
+            boxShadow: "0 8px 32px rgba(139, 92, 246, 0.15)",
+            animation: "fadeInUp 0.6s ease-out",
+            "@keyframes fadeInUp": {
+              from: {
+                opacity: 0,
+                transform: "translateY(30px)",
+              },
+              to: {
+                opacity: 1,
+                transform: "translateY(0)",
+              },
+            },
           }}
-          aria-hidden="true"
+          role="region"
+          aria-labelledby="form-title"
+          aria-describedby="form-step"
         >
+          {/* Progress Bar */}
           <Box
             sx={{
-              height: "100%",
-              width: `${progress}%`,
-              backgroundColor: "#4caf50",
-              transition: "width 0.3s ease",
+              position: "absolute",
+              top: 0,
+              left: 0,
+              right: 0,
+              height: "8px",
+              background: "rgba(229, 231, 235, 0.5)",
             }}
+            aria-hidden="true"
+          >
+            <Box
+              sx={{
+                height: "100%",
+                width: `${progress}%`,
+                background: "linear-gradient(90deg, #2563eb 0%, #8b5cf6 100%)",
+                transition: "width 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
+                boxShadow: "0 0 15px rgba(139, 92, 246, 0.8), 0 0 30px rgba(37, 99, 235, 0.4)",
+              }}
+            />
+          </Box>
+
+          {/* Header */}
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              mb: 4,
+              mt: 2,
+            }}
+          >
+            {title && (
+              <Typography
+                id="form-title"
+                variant="h5"
+                component="h1"
+                sx={{
+                  fontWeight: 700,
+                  background: "linear-gradient(135deg, #2563eb 0%, #8b5cf6 100%)",
+                  backgroundClip: "text",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                }}
+              >
+                {title}
+              </Typography>
+            )}
+            {subtitle && (
+              <Typography
+                id="form-step"
+                variant="body1"
+                sx={{
+                  color: "text.secondary",
+                  fontWeight: 600,
+                  px: 2,
+                  py: 0.5,
+                  borderRadius: 2,
+                  backgroundColor: "rgba(37, 99, 235, 0.1)",
+                }}
+              >
+                {`Step ${subtitle}`}
+              </Typography>
+            )}
+          </Box>
+
+          {/* Form Content */}
+          <Box sx={{ flex: 1, mb: 4 }}>
+            {children}
+          </Box>
+
+          {/* Navigation Buttons */}
+          <FormNavigationButtons
+            onBack={onBack}
+            onNext={onNext}
+            backButtonText={backButtonText}
+            nextButtonText={nextButtonText}
+            showBackButton={showBackButton}
+            showNextButton={showNextButton}
           />
-        </Box>
-
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            mt: 1,
-          }}
-        >
-          {title && (
-            <Typography
-              id="form-title"
-              variant="h6"
-              component="h6"
-              fontWeight={600}
-              sx={{ marginBottom: "10px" }}
-            >
-              {title}
-            </Typography>
-          )}
-          {subtitle && (
-            <Typography
-              id="form-step"
-              variant="body2"
-              color="text.secondary"
-              fontWeight={400}
-            >
-              {`Step ${subtitle}`}
-            </Typography>
-          )}
-        </Box>
-
-        {children}
-
-        <FormNavigationButtons
-          onBack={onBack}
-          onNext={onNext}
-          backButtonText={backButtonText}
-          nextButtonText={nextButtonText}
-          showBackButton={showBackButton}
-          showNextButton={showNextButton}
-        />
-      </Paper>
-    </Container>
+        </Paper>
+      </Container>
+    </Box>
   );
 }

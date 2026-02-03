@@ -27,19 +27,21 @@ export default function LanguageSwitcher() {
       size="small"
       aria-label="Select Language"
       sx={{
-        color: "inherit",
-        backgroundColor: "rgba(255, 255, 255, 0.1)",
+        background: "linear-gradient(135deg, #2563eb 0%, #8b5cf6 100%)",
+        color: "white",
+        fontWeight: 600,
+        borderRadius: 2,
         "& .MuiOutlinedInput-notchedOutline": {
-          borderColor: "rgba(255, 255, 255, 0.3)",
+          borderColor: "transparent",
         },
         "&:hover .MuiOutlinedInput-notchedOutline": {
-          borderColor: "rgba(255, 255, 255, 0.5)",
+          borderColor: "rgba(255, 255, 255, 0.3)",
         },
         "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-          borderColor: "rgba(255, 255, 255, 0.7)",
+          borderColor: "rgba(255, 255, 255, 0.5)",
         },
         "& .MuiSvgIcon-root": {
-          color: "inherit",
+          color: "white",
         },
       }}
     >

@@ -15,16 +15,30 @@ export default function FormNavigationButtons({
 
   return (
     <Box
-      sx={{ display: "flex", justifyContent: "space-between", mt: "1rem" }}
+      sx={{ 
+        display: "flex", 
+        justifyContent: "space-between", 
+        mt: 4,
+        pt: 3,
+        borderTop: "1px solid",
+        borderColor: "divider",
+      }}
       role="group"
       aria-label={t("form.navigation")}
     >
       {showBackButton && (
         <Button
           variant="outlined"
+          size="large"
           startIcon={<ArrowBackIcon />}
           onClick={onBack}
           aria-label={t(backButtonText)}
+          sx={{
+            borderWidth: 2,
+            "&:hover": {
+              borderWidth: 2,
+            },
+          }}
         >
           {t(backButtonText)}
         </Button>
@@ -33,10 +47,17 @@ export default function FormNavigationButtons({
       {showNextButton && (
         <Button
           variant="contained"
+          size="large"
           endIcon={<ArrowForwardIcon />}
           onClick={onNext}
           aria-label={t(nextButtonText)}
-          sx={!showBackButton ? { ml: "auto" } : {}}
+          sx={{
+            ml: showBackButton ? 0 : "auto",
+            background: "linear-gradient(135deg, #2563eb 0%, #8b5cf6 100%)",
+            "&:hover": {
+              background: "linear-gradient(135deg, #1e40af 0%, #6d28d9 100%)",
+            },
+          }}
         >
           {t(nextButtonText)}
         </Button>

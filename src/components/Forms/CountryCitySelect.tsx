@@ -6,9 +6,10 @@ import {
   MenuItem,
   FormHelperText,
   CircularProgress,
+  Box,
 } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import { useState, useEffect, Fragment } from "react";
+import { useState, useEffect } from "react";
 import type { FieldConfig } from "../../pages/FormOne/helper";
 import { fetchCountries, fetchStates, type Country, type State } from "../../services/locationService";
 
@@ -78,7 +79,7 @@ export default function CountryCitySelect<T extends FieldValues>({
   }, [countryValue, countries]);
 
   return (
-    <Fragment>
+    <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap", width: "100%" }}>
       {/* Country Select */}
       <Controller
         name={countryField.name as Path<T>}
@@ -176,6 +177,6 @@ export default function CountryCitySelect<T extends FieldValues>({
           );
         }}
       />
-    </Fragment>
+    </Box>
   );
 }

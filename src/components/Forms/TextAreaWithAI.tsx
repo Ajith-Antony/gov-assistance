@@ -139,8 +139,37 @@ export default function TextAreaWithAI<T extends FieldValues>({
                 </FormHelperText>
               )}
 
-              <Dialog open={open} onClose={handleClose} fullWidth maxWidth="sm">
-                <DialogTitle>
+              <Dialog 
+                open={open} 
+                onClose={handleClose} 
+                fullWidth 
+                maxWidth="sm"
+                PaperProps={{
+                  sx: {
+                    background: "rgba(255, 255, 255, 0.75)",
+                    backdropFilter: "blur(40px) saturate(200%)",
+                    WebkitBackdropFilter: "blur(40px) saturate(200%)",
+                    borderRadius: 4,
+                    boxShadow: "0 20px 60px rgba(139, 92, 246, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.5) inset",
+                    border: "1px solid rgba(255, 255, 255, 0.4)",
+                  },
+                }}
+                BackdropProps={{
+                  sx: {
+                    backdropFilter: "blur(8px)",
+                    backgroundColor: "rgba(102, 126, 234, 0.2)",
+                  },
+                }}
+              >
+                <DialogTitle
+                  sx={{
+                    background: "linear-gradient(135deg, #2563eb 0%, #8b5cf6 100%)",
+                    backgroundClip: "text",
+                    WebkitBackgroundClip: "text",
+                    WebkitTextFillColor: "transparent",
+                    fontWeight: 700,
+                  }}
+                >
                   {isEmpty ? t("ai.helpMeWrite") : t("ai.improveText")}
                 </DialogTitle>
 
@@ -180,6 +209,12 @@ export default function TextAreaWithAI<T extends FieldValues>({
                     onClick={() => {
                       controllerField.onChange(draft);
                       handleClose();
+                    }}
+                    sx={{
+                      background: "linear-gradient(135deg, #2563eb 0%, #8b5cf6 100%)",
+                      "&:hover": {
+                        background: "linear-gradient(135deg, #1e40af 0%, #6d28d9 100%)",
+                      },
                     }}
                   >
                     {t("ai.accept")}
