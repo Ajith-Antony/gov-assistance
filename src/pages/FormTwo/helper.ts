@@ -44,7 +44,7 @@ export const familyFinancialFields: FieldConfig[] = [
     name: "monthlyIncome",
     label: "financial.monthlyIncome",
     type: "number",
-    component: "TextField",
+    component: "MoneyInput",
     rules: {
       required: "errors.required",
     },

@@ -1,11 +1,14 @@
 import { useParams, useNavigate } from "react-router";
+import { useEffect } from "react";
 import FormWrapper from "../../components/Forms/FormWrapper";
 import { familyFinancialFields } from "./helper";
 import RenderField from "../../components/Forms/FormFieldRenderer";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import useLocalStorage from "../../hooks/useLocalStorage";
+import useAutoSave from "../../hooks/useAutoSave";
 import { Box } from "@mui/material";
+import { STORAGE_KEYS } from "../../constants";
 
 export default function FormTwo() {
   const { lang } = useParams();
@@ -14,13 +17,27 @@ export default function FormTwo() {
   const currentLang = lang || "en";
 
   const [applicationData, setApplicationData] = useLocalStorage(
-    "applicationData",
+    STORAGE_KEYS.APPLICATION_DATA,
     {}
   );
 
-  const { control, handleSubmit } = useForm({
+  const { control, handleSubmit, watch } = useForm({
     defaultValues: applicationData.financialInfo || {},
   });
+
+  // Auto-save form data on change (debounced)
+  const formData = watch();
+  useAutoSave(
+    `${STORAGE_KEYS.APPLICATION_DATA}_financialInfo`,
+    formData,
+    true
+  );
+
+  // Update applicationData when form changes (for final submission)
+  useEffect(() => {
+    setApplicationData((prev) => ({ ...prev, financialInfo: formData } as typeof prev));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [formData, setApplicationData]);
 
   const handleBack = () => {
     navigate(`/${currentLang}/apply/first`);

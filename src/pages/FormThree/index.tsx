@@ -1,24 +1,41 @@
 import { useParams, useNavigate } from "react-router";
+import { useEffect } from "react";
 import FormWrapper from "../../components/Forms/FormWrapper";
 import { situationFields } from "./helper";
 import { useForm } from "react-hook-form";
 import RenderField from "../../components/Forms/FormFieldRenderer";
 import useAppTranslation from "../../hooks/useAppTranslation";
 import useLocalStorage from "../../hooks/useLocalStorage";
+import useAutoSave from "../../hooks/useAutoSave";
+import { STORAGE_KEYS } from "../../constants";
 
 export default function FormThree() {
   const { lang } = useParams();
   const [applicationData, setApplicationData, removeValue] = useLocalStorage(
-    "applicationData",
+    STORAGE_KEYS.APPLICATION_DATA,
     {}
   );
   const { t } = useAppTranslation();
   const navigate = useNavigate();
   const currentLang = lang || "en";
 
-  const { control, handleSubmit } = useForm({
+  const { control, handleSubmit, watch } = useForm({
     defaultValues: applicationData.situationInfo || {},
   });
+
+  // Auto-save form data on change (debounced)
+  const formData = watch();
+  useAutoSave(
+    `${STORAGE_KEYS.APPLICATION_DATA}_situationInfo`,
+    formData,
+    true
+  );
+
+  // Update applicationData when form changes (for final submission)
+  useEffect(() => {
+    setApplicationData((prev) => ({ ...prev, situationInfo: formData } as typeof prev));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [formData, setApplicationData]);
 
   const handleBack = () => {
     navigate(`/${currentLang}/apply/second`);
