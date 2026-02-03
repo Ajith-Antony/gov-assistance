@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, useParams } from "react-router";
 import NavigationBar from "./components/NavigationBar";
 import { routeConfig, getStepComponent, LanguageRoute } from "./routes";
 import PageNotFound from "./pages/PageNotFound";
+import ErrorBoundary from "./components/ErrorBoundary";
 
 function StepRoute() {
   const { step } = useParams();
@@ -21,7 +22,7 @@ function StepRoute() {
 
 function App() {
   return (
-    <>
+    <ErrorBoundary>
       <BrowserRouter>
         <NavigationBar />
         <Routes>
@@ -46,7 +47,7 @@ function App() {
           })}
         </Routes>
       </BrowserRouter>
-    </>
+    </ErrorBoundary>
   );
 }
 
