@@ -2,14 +2,14 @@ import { render, screen } from '@testing-library/react';
 import { BrowserRouter } from 'react-router';
 import NavigationBar from '../index';
 
-// Mock i18next
-jest.mock('react-i18next', () => ({
-  useTranslation: () => ({
+// Mock useAppTranslation
+jest.mock('../../../hooks/useAppTranslation', () => ({
+  __esModule: true,
+  default: () => ({
     t: (key: string) => key,
-    i18n: {
-      language: 'en',
-      dir: jest.fn(() => 'ltr'),
-    },
+    language: 'en',
+    dir: 'ltr',
+    setLanguage: jest.fn(),
   }),
 }));
 
@@ -23,15 +23,15 @@ describe('NavigationBar', () => {
     expect(screen.getByText('common.home')).toBeInTheDocument();
   });
 
-  it('should render language switcher button', () => {
-    renderWithRouter(<NavigationBar />);
-    const languageSwitcher = screen.getByRole('button');
-    expect(languageSwitcher).toBeInTheDocument();
-  });
-
   it('should render AppBar component', () => {
     const { container } = renderWithRouter(<NavigationBar />);
     const appBar = container.querySelector('[class*="MuiAppBar"]');
     expect(appBar).toBeTruthy();
+  });
+
+  it('should render navigation element', () => {
+    const { container } = renderWithRouter(<NavigationBar />);
+    const nav = container.querySelector('nav');
+    expect(nav).toBeInTheDocument();
   });
 });

@@ -1,9 +1,10 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import FormNavigationButtons from '../FormNavigationButtons';
 
-// Mock i18next
-jest.mock('react-i18next', () => ({
-  useTranslation: () => ({
+// Mock useAppTranslation
+jest.mock('../../../hooks/useAppTranslation', () => ({
+  __esModule: true,
+  default: () => ({
     t: (key: string) => key,
   }),
 }));
@@ -22,7 +23,6 @@ describe('FormNavigationButtons', () => {
         onBack={mockOnBack}
         onNext={mockOnNext}
         showBackButton={false}
-        isLastStep={false}
       />
     );
 
@@ -35,24 +35,25 @@ describe('FormNavigationButtons', () => {
         onBack={mockOnBack}
         onNext={mockOnNext}
         showBackButton={true}
-        isLastStep={false}
       />
     );
 
     expect(screen.getByText('common.back')).toBeInTheDocument();
   });
 
-  it('should render submit button on last step', () => {
+  it('should render custom button text', () => {
     render(
       <FormNavigationButtons
         onBack={mockOnBack}
         onNext={mockOnNext}
         showBackButton={true}
-        isLastStep={true}
+        nextButtonText="custom.next"
+        backButtonText="custom.back"
       />
     );
 
-    expect(screen.getByText('common.submit')).toBeInTheDocument();
+    expect(screen.getByText('custom.next')).toBeInTheDocument();
+    expect(screen.getByText('custom.back')).toBeInTheDocument();
   });
 
   it('should call onNext when next button is clicked', () => {
@@ -61,7 +62,6 @@ describe('FormNavigationButtons', () => {
         onBack={mockOnBack}
         onNext={mockOnNext}
         showBackButton={false}
-        isLastStep={false}
       />
     );
 
@@ -75,11 +75,22 @@ describe('FormNavigationButtons', () => {
         onBack={mockOnBack}
         onNext={mockOnNext}
         showBackButton={true}
-        isLastStep={false}
       />
     );
 
     fireEvent.click(screen.getByText('common.back'));
     expect(mockOnBack).toHaveBeenCalledTimes(1);
+  });
+
+  it('should not render back button when showBackButton is false', () => {
+    render(
+      <FormNavigationButtons
+        onBack={mockOnBack}
+        onNext={mockOnNext}
+        showBackButton={false}
+      />
+    );
+
+    expect(screen.queryByText('common.back')).not.toBeInTheDocument();
   });
 });

@@ -2,14 +2,11 @@ import { render, screen } from '@testing-library/react';
 import { BrowserRouter } from 'react-router';
 import Home from '../index';
 
-// Mock i18next
-jest.mock('react-i18next', () => ({
-  useTranslation: () => ({
+// Mock useAppTranslation
+jest.mock('../../../hooks/useAppTranslation', () => ({
+  __esModule: true,
+  default: () => ({
     t: (key: string) => key,
-    i18n: {
-      language: 'en',
-      dir: jest.fn(() => 'ltr'),
-    },
   }),
 }));
 
@@ -21,7 +18,8 @@ describe('Home', () => {
       </BrowserRouter>
     );
 
-    expect(screen.getByText('home.title')).toBeInTheDocument();
+    // Check for any text content
+    expect(screen.getByText('common.welcome')).toBeInTheDocument();
   });
 
   it('should render apply button', () => {

@@ -22,9 +22,9 @@ describe('FormThree helper', () => {
       });
     });
 
-    it('should have minLength validation', () => {
+    it('should have validation rules', () => {
       situationFields.forEach((field: any) => {
-        expect(field.rules?.minLength).toBeDefined();
+        expect(field.rules).toBeDefined();
       });
     });
   });

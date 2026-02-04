@@ -2,9 +2,22 @@ import { render, screen } from '@testing-library/react';
 import { BrowserRouter } from 'react-router';
 import PageNotFound from '../index';
 
-// Mock i18next
-jest.mock('react-i18next', () => ({
-  useTranslation: () => ({
+// Mock i18n module before importing PageNotFound
+jest.mock('../../../i18n', () => ({
+  __esModule: true,
+  default: {
+    use: jest.fn().mockReturnThis(),
+    init: jest.fn().mockReturnThis(),
+    changeLanguage: jest.fn(),
+    language: 'en',
+    t: (key: string) => key,
+  },
+}));
+
+// Mock useAppTranslation
+jest.mock('../../../hooks/useAppTranslation', () => ({
+  __esModule: true,
+  default: () => ({
     t: (key: string) => key,
   }),
 }));
