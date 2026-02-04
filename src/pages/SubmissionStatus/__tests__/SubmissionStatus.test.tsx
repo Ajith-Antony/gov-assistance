@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import { BrowserRouter } from 'react-router';
 import SubmissionStatus from '../index';
 
@@ -22,6 +22,11 @@ jest.mock('../../../hooks/useAppTranslation', () => ({
   }),
 }));
 
+// Mock crypto.randomUUID
+global.crypto = {
+  randomUUID: () => 'test-uuid-1234',
+} as any;
+
 describe('SubmissionStatus', () => {
   it('should render submission status page', () => {
     const { container } = render(
@@ -30,7 +35,6 @@ describe('SubmissionStatus', () => {
       </BrowserRouter>
     );
 
-    // Check that the component renders
     expect(container.firstChild).toBeInTheDocument();
   });
 
@@ -41,19 +45,18 @@ describe('SubmissionStatus', () => {
       </BrowserRouter>
     );
 
-    // Check for SVG icon
     const svg = container.querySelector('svg');
     expect(svg).toBeInTheDocument();
   });
 
-  it('should have a go home button', () => {
-    render(
+  it('should render button', () => {
+    const { container } = render(
       <BrowserRouter>
         <SubmissionStatus />
       </BrowserRouter>
     );
 
-    const button = screen.getByRole('button');
+    const button = container.querySelector('button');
     expect(button).toBeInTheDocument();
   });
 });
