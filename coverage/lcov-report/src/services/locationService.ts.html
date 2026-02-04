@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">40.9% </span>
+                <span class="strong">59.09% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>18/44</span>
+                <span class='fraction'>26/44</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">11.11% </span>
+                <span class="strong">44.44% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>2/18</span>
+                <span class='fraction'>8/18</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">40.9% </span>
+                <span class="strong">59.09% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>18/44</span>
+                <span class='fraction'>26/44</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -232,21 +232,21 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -266,17 +266,17 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -355,21 +355,21 @@ const statesCache: Map&lt;string, State[]&gt; = new Map();
 const citiesCache: Map&lt;string, string[]&gt; = new Map();
 &nbsp;
 export async function fetchCountries(): Promise&lt;Country[]&gt; {
-  <span class="missing-if-branch" title="if path not taken" >I</span>if (countriesCache) {
-<span class="cstat-no" title="statement not covered" >    return countriesCache;</span>
+  if (countriesCache) {
+    return countriesCache;
   }
 &nbsp;
   try {
     const response = await fetch(API_ENDPOINTS.COUNTRIES);
-<span class="cstat-no" title="statement not covered" >    if (!response.ok) {</span>
+    <span class="missing-if-branch" title="if path not taken" >I</span>if (!response.ok) {
 <span class="cstat-no" title="statement not covered" >      throw new Error("Failed to fetch countries");</span>
     }
-    const data: CountriesResponse = <span class="cstat-no" title="statement not covered" >await response.json();</span>
-<span class="cstat-no" title="statement not covered" >    countriesCache = data.data || [];</span>
-<span class="cstat-no" title="statement not covered" >    return countriesCache;</span>
+    const data: CountriesResponse = await response.json();
+    countriesCache = data.data || <span class="branch-1 cbranch-no" title="branch not covered" >[];</span>
+    return countriesCache;
   } catch (error) {
-    console.error("Error fetching countries:", error);
-    return [];
+<span class="cstat-no" title="statement not covered" >    console.error("Error fetching countries:", error);</span>
+<span class="cstat-no" title="statement not covered" >    return [];</span>
   }
 }
 &nbsp;
@@ -389,14 +389,14 @@ export async function fetchStates(countryIso2: string): Promise&lt;State[]&gt; {
       body: JSON.stringify({ country: countryIso2 }),
     });
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    if (!response.ok) {</span>
+    <span class="missing-if-branch" title="if path not taken" >I</span>if (!response.ok) {
 <span class="cstat-no" title="statement not covered" >      throw new Error("Failed to fetch states");</span>
     }
 &nbsp;
-    const data: StatesResponse = <span class="cstat-no" title="statement not covered" >await response.json();</span>
-    const states = <span class="cstat-no" title="statement not covered" >data.data?.states || [];</span>
-<span class="cstat-no" title="statement not covered" >    statesCache.set(cacheKey, states);</span>
-<span class="cstat-no" title="statement not covered" >    return states;</span>
+    const data: StatesResponse = await response.json();
+    const states = data.data?.states || [];
+    statesCache.set(cacheKey, states);
+    return states;
   } catch (error) {
     console.error("Error fetching states:", error);
     return [];
@@ -439,7 +439,7 @@ export async function <span class="fstat-no" title="function not covered" >fetch
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-02-04T18:47:23.837Z
+                at 2026-02-04T18:54:14.095Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

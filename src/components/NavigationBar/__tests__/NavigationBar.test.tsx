@@ -6,7 +6,10 @@ import NavigationBar from '../index';
 jest.mock('react-i18next', () => ({
   useTranslation: () => ({
     t: (key: string) => key,
-    i18n: { language: 'en' },
+    i18n: {
+      language: 'en',
+      dir: jest.fn(() => 'ltr'),
+    },
   }),
 }));
 
@@ -20,16 +23,15 @@ describe('NavigationBar', () => {
     expect(screen.getByText('common.home')).toBeInTheDocument();
   });
 
-  it('should have glassmorphism styling', () => {
-    const { container } = renderWithRouter(<NavigationBar />);
-    const appBar = container.querySelector('header');
-    expect(appBar).toBeInTheDocument();
-  });
-
-  it('should render language switcher', () => {
+  it('should render language switcher button', () => {
     renderWithRouter(<NavigationBar />);
-    // Language switcher should be present
     const languageSwitcher = screen.getByRole('button');
     expect(languageSwitcher).toBeInTheDocument();
+  });
+
+  it('should render AppBar component', () => {
+    const { container } = renderWithRouter(<NavigationBar />);
+    const appBar = container.querySelector('[class*="MuiAppBar"]');
+    expect(appBar).toBeTruthy();
   });
 });
