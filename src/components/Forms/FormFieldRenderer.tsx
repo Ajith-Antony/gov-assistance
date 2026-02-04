@@ -53,18 +53,16 @@ export default function RenderField<T extends FieldValues>({
               return <PhoneNumberInput field={field} control={control} />;
 
             case "CountryCitySelect":
-              if (!relatedFields?.countryField || !relatedFields?.stateField) {
-                console.error("CountryCitySelect requires countryField and stateField");
-                return <Box />;
+              if (relatedFields?.countryField && relatedFields?.stateField) {
+                return (
+                  <CountryCitySelect
+                    countryField={relatedFields.countryField}
+                    stateField={relatedFields.stateField}
+                    control={control}
+                  />
+                );
               }
-              return (
-                <CountryCitySelect
-                  countryField={relatedFields.countryField}
-                  stateField={relatedFields.stateField}
-                  control={control}
-                  countryValue={countryValue}
-                />
-              );
+              return null;
 
             case "MoneyInput":
               return <MoneyInput field={field} control={control} />;

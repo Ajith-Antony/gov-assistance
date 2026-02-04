@@ -25,8 +25,8 @@ export default function FormThree() {
   // Auto-save form data on change (debounced)
   const formData = watch();
   useAutoSave(
-    `${STORAGE_KEYS.APPLICATION_DATA}_situationInfo`,
-    formData,
+    STORAGE_KEYS.APPLICATION_DATA,
+    { ...applicationData, situationInfo: formData },
     true
   );
 

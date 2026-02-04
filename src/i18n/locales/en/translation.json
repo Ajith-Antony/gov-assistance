@@ -12,7 +12,10 @@
     "switchLanguage": "Switch Language",
     "home": "Home",
     "welcome": "Welcome!",
-    "applyButton": "Apply for assistance"
+    "applyButton": "Apply for assistance",
+    "noCountriesAvailable": "No countries available",
+    "noStatesAvailable": "No states available for this country",
+    "selectCountryFirst": "Please select a country first"
   },
 
   "home": {
@@ -27,6 +30,11 @@
     "invalidEmail": "Enter a valid email address",
     "invalidPhone": "Enter a valid phone number",
     "dateInFuture": "Date cannot be in the future"
+  },
+
+  "form": {
+    "personalInfo": "Personal Information",
+    "navigation": "Form navigation"
   },
 
   "personal": {
@@ -72,6 +80,7 @@
     "retired": "Retired",
 
     "monthlyIncome": "Monthly Income",
+    "currency": "Currency",
 
     "housingStatus": "Housing Status",
     "housing_rent": "Renting",
@@ -101,18 +110,34 @@
     "discard": "Discard",
     "error": "Failed to generate text. Please try again."
   },
+
+  "autoSave": {
+    "saving": "Saving...",
+    "saved": "Saved",
+    "error": "Error saving"
+  },
+
   "pageNotFound": {
     "title": "Page Not Found",
     "code": "404",
     "description": "The page you are looking for does not exist.",
     "goHome": "Go Home"
   },
+
   "submission": {
     "successTitle": "Successfully Submitted",
     "errorTitle": "Submission Error",
     "successMessage": "Your application has been submitted successfully.",
     "errorMessage": "An error occurred while submitting your application. Please try again.",
+    "applicationNumber": "Application Number",
+    "copyNumber": "Copy application number",
+    "saveNumber": "Please save this number for your records",
+    "nextSteps": "Next Steps",
+    "step1": "You will receive a confirmation email within 24 hours",
+    "step2": "Our team will review your application within 3-5 business days",
+    "step3": "You will be notified of the decision via email and SMS",
     "goHome": "Go Home",
-    "tryAgain": "Try Again"
+    "tryAgain": "Try Again",
+    "copied": "Copied to clipboard!"
   }
 }

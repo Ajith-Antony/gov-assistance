@@ -27,8 +27,8 @@ export default function FormTwo() {
   // Auto-save form data on change (debounced)
   const formData = watch();
   useAutoSave(
-    `${STORAGE_KEYS.APPLICATION_DATA}_financialInfo`,
-    formData,
+    STORAGE_KEYS.APPLICATION_DATA,
+    { ...applicationData, financialInfo: formData },
     true
   );
 
