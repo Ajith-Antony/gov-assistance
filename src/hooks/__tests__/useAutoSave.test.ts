@@ -2,17 +2,29 @@ import { renderHook } from '@testing-library/react';
 import { act } from 'react';
 import useAutoSave from '../useAutoSave';
 
-// Mock useLocalStorage
-const mockSetValue = jest.fn();
-jest.mock('../useLocalStorage', () => ({
-  __esModule: true,
-  default: jest.fn(() => [{}, mockSetValue, jest.fn()]),
-}));
+// Mock localStorage
+const mockLocalStorage = (() => {
+  let store: Record<string, string> = {};
+  return {
+    getItem: (key: string) => store[key] || null,
+    setItem: (key: string, value: string) => {
+      store[key] = value;
+    },
+    clear: () => {
+      store = {};
+    },
+  };
+})();
+
+Object.defineProperty(window, 'localStorage', {
+  value: mockLocalStorage,
+});
 
 describe('useAutoSave', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     jest.useFakeTimers();
+    mockLocalStorage.clear();
   });
 
   afterEach(() => {
@@ -20,29 +32,43 @@ describe('useAutoSave', () => {
   });
 
   it('should save data after debounce delay', async () => {
-    const { rerender } = renderHook(
+    const { result, rerender } = renderHook(
       ({ data }) => useAutoSave('test-key', data, true),
       { initialProps: { data: { name: 'test' } } }
     );
 
-    expect(mockSetValue).not.toHaveBeenCalled();
+    // Initial status should be idle
+    expect(result.current).toBe('idle');
 
-    // Fast-forward time
+    // Trigger a change
+    rerender({ data: { name: 'updated' } });
+
+    // Should be saving
+    expect(result.current).toBe('saving');
+
+    // Fast-forward past debounce time
     act(() => {
       jest.advanceTimersByTime(1000);
     });
 
-    expect(mockSetValue).toHaveBeenCalledWith({ name: 'test' });
+    // Should be saved
+    expect(result.current).toBe('saved');
+    expect(mockLocalStorage.getItem('test-key')).toBe(JSON.stringify({ name: 'updated' }));
   });
 
   it('should not save when disabled', () => {
-    renderHook(() => useAutoSave('test-key', { name: 'test' }, false));
+    const { rerender } = renderHook(
+      ({ data }) => useAutoSave('test-key', data, false),
+      { initialProps: { data: { name: 'test' } } }
+    );
+
+    rerender({ data: { name: 'updated' } });
 
     act(() => {
       jest.advanceTimersByTime(1000);
     });
 
-    expect(mockSetValue).not.toHaveBeenCalled();
+    expect(mockLocalStorage.getItem('test-key')).toBeNull();
   });
 
   it('should debounce multiple updates', () => {
@@ -64,16 +90,12 @@ describe('useAutoSave', () => {
     
     rerender({ data: { count: 3 } });
 
-    // Should not save yet
-    expect(mockSetValue).not.toHaveBeenCalled();
-
     // Fast-forward past debounce time
     act(() => {
       jest.advanceTimersByTime(1000);
     });
 
-    // Should only save once with the latest value
-    expect(mockSetValue).toHaveBeenCalledTimes(1);
-    expect(mockSetValue).toHaveBeenCalledWith({ count: 3 });
+    // Should only save the latest value
+    expect(mockLocalStorage.getItem('test-key')).toBe(JSON.stringify({ count: 3 }));
   });
 });
