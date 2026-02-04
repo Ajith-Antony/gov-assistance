@@ -19,13 +19,7 @@ describe('generateAIText', () => {
     const mockResponse = {
       ok: true,
       json: async () => ({
-        choices: [
-          {
-            message: {
-              content: 'Generated AI text response',
-            },
-          },
-        ],
+        text: 'Generated AI text response',
       }),
     };
 
@@ -34,6 +28,19 @@ describe('generateAIText', () => {
     const result = await generateAIText('Test prompt');
 
     expect(result).toBe('Generated AI text response');
+  });
+
+  it('should return empty string when no text in response', async () => {
+    const mockResponse = {
+      ok: true,
+      json: async () => ({}),
+    };
+
+    (global.fetch as jest.Mock).mockResolvedValueOnce(mockResponse);
+
+    const result = await generateAIText('Test prompt');
+
+    expect(result).toBe('');
   });
 
   it('should throw error when API call fails', async () => {
