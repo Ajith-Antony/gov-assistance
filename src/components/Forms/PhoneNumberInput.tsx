@@ -79,16 +79,20 @@ export default function PhoneNumberInput<T extends FieldValues>({
         return (
           <FormControl 
             sx={{ 
-              minWidth: { xs: "100%", sm: 250 }, 
+              minWidth: { xs: "100%", sm: 250,width:'100%' }, 
               flex: 1 
             }} 
             error={hasError}
           >
-            <Box sx={{ 
-              display: "flex", 
-              gap: 1,
-              flexDirection: { xs: "column", sm: "row" }
-            }}>
+            <Box
+          sx={{
+            display: "flex",
+            gap: "1rem",
+            flexDirection: { xs: "column", sm: "row" },
+            width: "100%",
+            flex: 1,
+          }}
+        >
               <Select
                 value={selectedCode}
                 onChange={(e) => handleCodeChange(e.target.value)}

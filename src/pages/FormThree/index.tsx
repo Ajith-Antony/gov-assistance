@@ -53,7 +53,7 @@ export default function FormThree() {
   const submitForm = async () => {
     return new Promise((resolve) => {
       setTimeout(() => {
-        resolve({ success: Math.random() > 0.5 });
+        resolve({ success: true});
       }, 1000);
     });
   };

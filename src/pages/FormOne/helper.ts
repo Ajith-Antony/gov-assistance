@@ -60,13 +60,6 @@ export const personalInfoFields: FieldConfig[] = [
     ],
     rules: { required: "errors.required" },
   },
-  {
-    name: "address",
-    label: "personal.address",
-    type: "text",
-    component: "TextField",
-    rules: { required: "errors.required" },
-  },
   // Country and State will be rendered together using CountryCitySelect
   {
     name: "country",
@@ -80,6 +73,13 @@ export const personalInfoFields: FieldConfig[] = [
     label: "personal.state",
     type: "select",
     component: "CountryCitySelect", // Will be rendered with country
+    rules: { required: "errors.required" },
+  },
+  {
+    name: "address",
+    label: "personal.address",
+    type: "text",
+    component: "TextField",
     rules: { required: "errors.required" },
   },
   {

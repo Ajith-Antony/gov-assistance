@@ -1,4 +1,4 @@
-import { Controller, type Control, type FieldValues, type Path } from "react-hook-form";
+import { Controller, type Control, type FieldValues, type Path, useWatch } from "react-hook-form";
 import {
   FormControl,
   InputLabel,
@@ -17,16 +17,19 @@ interface CountryCitySelectProps<T extends FieldValues> {
   countryField: FieldConfig;
   stateField: FieldConfig;
   control: Control<T>;
-  countryValue?: string;
 }
 
 export default function CountryCitySelect<T extends FieldValues>({
   countryField,
   stateField,
   control,
-  countryValue,
 }: CountryCitySelectProps<T>) {
   const { t } = useTranslation();
+  // Watch the country field value to trigger state loading
+  const countryValue = useWatch({
+    control,
+    name: countryField.name as Path<T>,
+  });
   const [countries, setCountries] = useState<Country[]>([]);
   const [states, setStates] = useState<State[]>([]);
   const [loadingCountries, setLoadingCountries] = useState(false);
@@ -79,7 +82,7 @@ export default function CountryCitySelect<T extends FieldValues>({
   }, [countryValue, countries]);
 
   return (
-    <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap", width: "100%" }}>
+    <>
       {/* Country Select */}
       <Controller
         name={countryField.name as Path<T>}
@@ -91,7 +94,13 @@ export default function CountryCitySelect<T extends FieldValues>({
           const helperId = `${countryField.name}-helper`;
 
           return (
-            <FormControl sx={{ minWidth: 250, flex: 1 }} error={hasError}>
+            <FormControl 
+              sx={{ 
+                minWidth: { xs: "45%", sm: 200 }, 
+                flex: 1,
+              }} 
+              error={hasError}
+            >
               <InputLabel id={`${countryField.name}-label`}>
                 {t(countryField.label)}
               </InputLabel>
@@ -141,7 +150,13 @@ export default function CountryCitySelect<T extends FieldValues>({
           const helperId = `${stateField.name}-helper`;
 
           return (
-            <FormControl sx={{ minWidth: 250, flex: 1 }} error={hasError}>
+            <FormControl 
+              sx={{ 
+                minWidth: { xs: "45%", sm: 200 }, 
+                flex: 1,
+              }} 
+              error={hasError}
+            >
               <InputLabel id={`${stateField.name}-label`}>
                 {t(stateField.label)}
               </InputLabel>
@@ -177,6 +192,6 @@ export default function CountryCitySelect<T extends FieldValues>({
           );
         }}
       />
-    </Box>
+    </>
   );
 }

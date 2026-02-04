@@ -2,6 +2,7 @@ import { useParams, useNavigate } from "react-router";
 import FormWrapper from "../../components/Forms/FormWrapper";
 import { personalInfoFields } from "./helper";
 import RenderField from "../../components/Forms/FormFieldRenderer";
+import CountryCitySelect from "../../components/Forms/CountryCitySelect";
 import { useForm } from "react-hook-form";
 import useAppTranslation from "../../hooks/useAppTranslation";
 import useLocalStorage from "../../hooks/useLocalStorage";
@@ -24,14 +25,11 @@ export default function FormOne() {
     defaultValues: (applicationData.personalInfo as Record<string, unknown>) || {},
   });
 
-  // Watch country value for dependent state dropdown
-  const countryValue = watch("country") as string | undefined;
-
   // Auto-save form data on change (debounced)
   const formData = watch();
   useAutoSave(
-    `${STORAGE_KEYS.APPLICATION_DATA}_personalInfo`,
-    formData,
+    STORAGE_KEYS.APPLICATION_DATA,
+    { ...applicationData, personalInfo: formData },
     true
   );
 
@@ -44,36 +42,44 @@ export default function FormOne() {
     navigate(`/${currentLang}/apply/second`);
   });
 
-  // Find country and state fields for CountryCitySelect
+  // Get country and state fields from personalInfoFields
   const countryField = personalInfoFields.find((f) => f.name === "country");
   const stateField = personalInfoFields.find((f) => f.name === "state");
 
   return (
     <FormWrapper
-      title={t("personal.heading")}
+      title={t("form.personalInfo")}
       step={1}
       totalSteps={3}
       onBack={handleBack}
       onNext={handleNext}
+      showBackButton={false}
     >
-      <Box sx={{ display: "flex", flexWrap: "wrap", gap: "1rem" }}>
+      <Box sx={{ display: "flex", flexDirection: "column", gap: 3 }}>
         {personalInfoFields.map((field) => {
-          // Skip state field as it will be rendered with country
-          if (field.name === "state") return null;
+          // Skip state field as it's rendered with country
+          if (field.name === "state") {
+            return null;
+          }
 
           // Render country with state together
           if (field.name === "country" && countryField && stateField) {
             return (
-              <RenderField
-                key="country-state"
-                field={countryField}
-                control={control}
-                countryValue={countryValue}
-                relatedFields={{
-                  countryField,
-                  stateField,
+              <Box
+                key="country-state-wrapper"
+                sx={{
+                  display: "flex",
+                  gap: 2,
+                  flexWrap: "nowrap",
+                  width: "100%",
                 }}
-              />
+              >
+                <CountryCitySelect
+                  control={control}
+                  countryField={countryField}
+                  stateField={stateField}
+                />
+              </Box>
             );
           }
 
