@@ -1,4 +1,6 @@
+import axiosInstance from "./api/interceptors";
 import { API_ENDPOINTS, TIMEOUTS, ERROR_CODES } from "../constants";
+import type { AxiosError } from "axios";
 
 interface AIResponse {
   text?: string;
@@ -9,25 +11,26 @@ export async function generateAIText(prompt: string): Promise<string> {
   const timeoutId = setTimeout(() => controller.abort(), TIMEOUTS.AI_REQUEST);
 
   try {
-    const response = await fetch(API_ENDPOINTS.AI_GENERATE, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ prompt }),
-      signal: controller.signal,
-    });
+    const response = await axiosInstance.post<AIResponse>(
+      API_ENDPOINTS.AI_GENERATE,
+      { prompt },
+      {
+        signal: controller.signal,
+        timeout: TIMEOUTS.AI_REQUEST,
+      }
+    );
 
-    if (!response.ok) {
-      throw new Error(ERROR_CODES.AI_REQUEST_FAILED);
-    }
-
-    const data: AIResponse = await response.json();
-    return data?.text || "";
+    return response.data?.text || "";
   } catch (error) {
     if (error instanceof Error && error.name === "AbortError") {
       throw new Error(ERROR_CODES.AI_TIMEOUT);
     }
+    
+    const axiosError = error as AxiosError;
+    if (axiosError.response) {
+      throw new Error(ERROR_CODES.AI_REQUEST_FAILED);
+    }
+    
     throw error;
   } finally {
     clearTimeout(timeoutId);
